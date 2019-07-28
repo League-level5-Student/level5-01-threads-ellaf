@@ -5,22 +5,36 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ThreadPool {
 ThreadPoolTest tpt = new ThreadPoolTest();
 Thread[] threads;
-ConcurrentLinkedQueue<Task> taskQueue = new ConcurrentLinkedQueue<Task>();
+ConcurrentLinkedQueue<Task> taskQueue;
 
-ThreadPool(int totalThreads){
+public ThreadPool(int totalThreads){
 	//
 	threads = new Thread[totalThreads];
+	taskQueue = new ConcurrentLinkedQueue<Task>();
 	for (int i = 0; i < threads.length; i++) {
-		threads[i]
+	threads[i] = new Thread(new Worker(taskQueue));
 	}
 }
 
 void addTask(Task task) {
-	//
+	taskQueue.add(task);
 }
 
 void start(){
-	//
+	for(int i = 0; i < threads.length; i++) {
+		threads[i].start();
+		System.out.println("orange");
+		try {
+		threads[i].join();
+		} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	}
+	
+
 }
 	
 	
